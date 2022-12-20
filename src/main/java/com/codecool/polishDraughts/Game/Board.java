@@ -10,27 +10,21 @@ public class Board {
 
     public static Pawn[][] board(int n) {
         board = new Pawn[n][n];
-        for (int i=0; i<n; i++) {
-            for (int j=0; j<n; j++) {
-                if (i==0 && j%2!=0) {
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (i == 0 && j % 2 != 0) {
                     board[i][j] = new Pawn(BLACK);
-                }
-                else if (i==1 && j%2==0) {
+                } else if (i == 1 && j % 2 == 0) {
                     board[i][j] = new Pawn(BLACK);
-                }
-                else if (i==n-2 && j%2!=0) {
+                } else if (i == n - 2 && j % 2 != 0) {
                     board[i][j] = new Pawn(WHITE);
-                }
-                else if (i==n-1 && j%2==0) {
+                } else if (i == n - 1 && j % 2 == 0) {
                     board[i][j] = new Pawn(WHITE);
-                }
-                else if (i%2==0 && j%2==0) {
+                } else if (i % 2 == 0 && j % 2 == 0) {
                     board[i][j] = new Pawn(BLUE);
-                }
-                else if (i%2!=0 && j%2!=0) {
+                } else if (i % 2 != 0 && j % 2 != 0) {
                     board[i][j] = new Pawn(BLUE);
-                }
-                else {
+                } else {
                     board[i][j] = new Pawn(GREEN);
                 }
             }
@@ -38,10 +32,15 @@ public class Board {
         return board;
     }
 
+
     public String toString() {
-        return "toString";
+        return "String toString()";
     }
 
+//
+//    public static void printBoard() {
+//        System.out.println(board.toString());
+//    }
 
 
 
@@ -51,20 +50,16 @@ public class Board {
         //one  space for lettersSideBoard and 2x spaces for each column
         String substr = headBoard.substring(0, board.length * 2 + 1);
         //initialize board2 used for display
-//        String[][] stringBoard = new String[board.length][board.length];
-//        Pawn[][] board2 = new Pawn[board.length][board.length+1];
         String[][] stringBoard = new String[board.length + 1][board.length + 1];
-
-//        for (int row=0; row<board.length; row++) {
-//            for (int col=0; col < board[0].length; col++) {
-//                stringBoard[row][col] = Integer.toString(board[row][col]);
-//            }
-//        }
 
         for (int row = 0; row < stringBoard.length; row++) {
             for (int col = 0; col < stringBoard.length; col++) {
-                String firstLetter = (char) (row + 65) + "";
+                String firstLetter = (char) (col + 64) + "";
                 if (col == 0 && row > 0) {
+                    stringBoard[row][col] = Integer.toString(row);
+                } else if (col == 0) {
+                    stringBoard[row][col] = "";
+                } else if (row == 0) {
                     stringBoard[row][col] = firstLetter;
                 } else {
                     if (board[col - 1][row - 1].pawnColor == BLUE) {
@@ -80,37 +75,60 @@ public class Board {
                 }
             }
         }
-        System.out.println(Arrays.deepToString(stringBoard));
 
-/*
-        System.out.println(" "+substr.replace(",","").
-                replace("[","").replace("]","")
-                +
-                "\n"+
-                Arrays.deepToString(stringBoard2).replace("0], ", "."+"\n").
-                        replace("[[", "").replace("0]]", ".").
-                        replace("[","").replace("0,",".").
-                        replace("1,", "X").replace("2,","O").
-                        replace("1],","X"+"\n").replace("2],","O"+"\n").
-                        replace(",","").replace("2]]","0").
-                        replace("1]]","X").replace(" B","B").
-                        replace(" C","C").replace(" D","D").
-                        replace(" E","E").replace(" F","F").
-                        replace(" G","G").replace(" H","H").
-                        replace(" I","I").replace(" J","J").
-                        replace(" K","K")+"\n");
-
+        System.out.println(Arrays.deepToString(stringBoard).replace("[[", " ").
+                replace("], ", "\n").
+                replace(","," ").
+                replace("[","").
+                replace("]]","").
+                replace("10 ","10").
+                replace("11 ","11").
+                replace("12 ","12").
+                replace("13 ","13").
+                replace("14 ","14").
+                replace("15 ","15").
+                replace("16 ","16").
+                replace("17 ","17").
+                replace("18 ","18").
+                replace("19 ","19").
+                replace("20 ","20"));
     }
 
 
-
-    public void removePawn (int x, int y) {
-
+    public static void removePawn(int row, int col) {
+        if (board[row][col].pawnColor == WHITE || board[row][col].pawnColor == BLACK) {
+            board[row][col] = new Pawn(GREEN);
+        } else {
+            System.out.println("Try to select a Pawn");
+        }
     }
 
     public void movePawn (int xi, int yi, int x, int y) {
 
     }
-*/
+
+
+
+    //display board
+    public static void displayBoard() {
+        int count = 0;
+        int n = board.length;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                count++;
+                System.out.println("count: " + count);
+//                System.out.println("Board: "+ (Board.board[i][j].pawnColor));
+                if (Board.board[i][j].pawnColor == Color.GREEN) {
+                    System.out.println("You have green at: i=" + i + "  j=" + j);
+                } else if (Board.board[i][j].pawnColor == Color.WHITE) {
+                    System.out.println("You have white at: i=" + i + "  j=" + j);
+                } else if (Board.board[i][j].pawnColor == Color.BLACK) {
+                    System.out.println("You have black at: i=" + i + "  j=" + j);
+                } else if (Board.board[i][j].pawnColor == Color.BLUE) {
+                    System.out.println("You have blue at: i=" + i + "  j=" + j);
+                }
+            }
+        }
     }
+
 }
