@@ -108,7 +108,7 @@ public class Board {
     }
 
     public static void choosePawn(int col, int row) {
-        if (board[row][col].pawnColor == WHITE || board[col][row].pawnColor == BLACK) {
+        if (board[row][col].pawnColor == WHITE || board[row][col].pawnColor == BLACK) {
             board[row][col] = new Pawn(GRAY);
         } else {
             System.out.println("Try to select a Pawn");
