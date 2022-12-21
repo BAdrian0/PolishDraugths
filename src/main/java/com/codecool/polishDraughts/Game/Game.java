@@ -1,63 +1,177 @@
 package com.codecool.polishDraughts.Game;
 
+import java.awt.*;
 import java.util.Scanner;
+import static java.awt.Color.*;
 
 public class Game {
 
-//    public int[] getMove(int player) {
-//        Scanner move = new Scanner(System.in);
-//        boolean validCoordinates = false;
-//        int rowMove = 0;
-//        int colsMove = 0;
-//        String stringMove;
-//
-//        do {
-//            System.out.println("Player " + player + " enter your move (A2): ");
-//            stringMove = move.nextLine();
-//            stringMove = stringMove.toUpperCase();
-//
-//            //check for quit
-//            if (stringMove.equals("QUIT")) {
-//                System.out.println("You quit the game!");
-//                System.exit(0);
-//            }
-//
-//            //check for string length max 3
-//            if (stringMove.length()>3 || stringMove.length()<2) {
-//                System.out.println("A letter between A and " + ((char) (board.length+65-1)) +
-//                        " and a number between 1 and "+ board[0].length + " please!");
-//                continue;
-//            }
-//            //check for valid letter in first position
-//            rowMove = ((int) stringMove.charAt(0))-65;
-//            if (!(0<=rowMove && rowMove<=(board.length-1))) {
-//                System.out.println("Not a valid letter!");
-//                continue;
-//            }
-//            //check for valid number
-//            if (stringMove.length() == 2) {
-//                colsMove = ((int) stringMove.charAt(1)) - 48 - 1;
-//            } else {
-//                String stringNumber = stringMove.substring(1);
-//                try {
-//                    colsMove = Integer.parseInt(stringNumber)-1;
-//                } catch (Exception e) {
-//                    System.out.println("Not a valid number!");
-//                    continue;
-//                }
-//            }
-//            if (!(0<=colsMove && colsMove<(board[0].length))) {
-//                System.out.println("Not a valid number!");
-//                continue;
-//            }
-//            //check for unocuppied position
-//            if (board[rowMove][colsMove] !=0) {
-//                System.out.println("That position is not free!");
-//                continue;
-//            }
-//            validCoordinates = true;
-//        } while (!validCoordinates);
-//
-//        return new int[]{rowMove, colsMove};
-//    }
+    public static int[] startMove(Color player) {
+        Scanner move = new Scanner(System.in);
+        boolean validCoordinates = false;
+        int rowsMove = 0;
+        int colsMove = 0;
+        char playerSign;
+        String stringMove;
+
+        if (player == WHITE) {
+            playerSign = 'O';
+        } else {
+            playerSign = 'X';
+        }
+
+        do {
+            System.out.println("Player " + playerSign + " select your pawn to move (A2): ");
+            stringMove = move.nextLine();
+            stringMove = stringMove.toUpperCase();
+            colsMove = ((int) stringMove.charAt(0))-65;
+            System.out.println("ColsMove: " + colsMove);
+
+            //check for quit
+            checkForQuit(stringMove);
+
+            //check for string length max 3
+            if (checkMaxLength(stringMove)) continue;
+
+            //check for valid letter in first position
+            if (checkLetter(colsMove)) continue;
+
+            //set the coordinate number
+            if (stringMove.length() == 2) {
+                rowsMove = ((int) stringMove.charAt(1)) - 48 - 1;
+                System.out.println("rowsMove: " + rowsMove);
+            } else {
+                String stringNumber = stringMove.substring(1);
+                try {
+                    rowsMove = Integer.parseInt(stringNumber)-1;
+                    System.out.println("rowsMove: " + rowsMove);
+                } catch (Exception e) {
+                    System.out.println("Not a valid number!");
+                    continue;
+                }
+            }
+
+            //check the row number
+            if (checkRowNumber(rowsMove)) continue;
+
+            //check for valid pawn or blue area
+            validCoordinates = isValidCoordinates(player, validCoordinates, rowsMove, colsMove);
+        } while (!validCoordinates);
+
+        return new int[]{ colsMove, rowsMove };
+    }
+
+
+    public static int[] endMove(Color player) {
+        Scanner move = new Scanner(System.in);
+        boolean validCoordinates = false;
+        int rowsMove = 0;
+        int colsMove = 0;
+        char playerSign;
+        String stringMove;
+
+        if (player == WHITE) {
+            playerSign = 'O';
+        } else {
+            playerSign = 'X';
+        }
+
+        do {
+            System.out.println("Player " + playerSign + " select your pawn destination (A2): ");
+            stringMove = move.nextLine();
+            stringMove = stringMove.toUpperCase();
+            colsMove = ((int) stringMove.charAt(0))-65;
+            System.out.println("ColsMove: " + colsMove);
+
+            //check for quit
+            checkForQuit(stringMove);
+
+            //check for string length max 3
+            if (checkMaxLength(stringMove)) continue;
+
+            //check for valid letter in first position
+            if (checkLetter(colsMove)) continue;
+
+            //set the coordinate number
+            if (stringMove.length() == 2) {
+                rowsMove = ((int) stringMove.charAt(1)) - 48 - 1;
+                System.out.println("rowsMove: " + rowsMove);
+            } else {
+                String stringNumber = stringMove.substring(1);
+                try {
+                    rowsMove = Integer.parseInt(stringNumber)-1;
+                    System.out.println("rowsMove: " + rowsMove);
+                } catch (Exception e) {
+                    System.out.println("Not a valid number!");
+                    continue;
+                }
+            }
+
+            //check the row number
+            if (checkRowNumber(rowsMove)) continue;
+
+            //check for valid pawn or blue area
+//            validCoordinates = isValidCoordinates(player, validCoordinates, rowsMove, colsMove);
+
+            //check for valid destination
+            if (Board.board[rowsMove][colsMove].pawnColor != GREEN) {
+                System.out.println("Choose a valid place!");
+            } else {
+//                System.out.println("Board.board[rowsMove][colsMove].pawnColor: " + Board.board[rowsMove][colsMove].pawnColor);
+                validCoordinates = true;
+            }
+
+
+        } while (!validCoordinates);
+
+        return new int[]{ colsMove, rowsMove };
+
+    }
+
+
+    private static boolean isValidCoordinates(Color player, boolean validCoordinates, int rowsMove, int colsMove) {
+        if (Board.board[rowsMove][colsMove].pawnColor != player) {
+            System.out.println("Choose a valid pawn!");
+        } else if (Board.board[rowsMove][colsMove].pawnColor == BLUE) {
+            System.out.println("Out of the valid filed");
+        } else {
+            System.out.println("Board.board[rowsMove][colsMove].pawnColor: " + Board.board[rowsMove][colsMove].pawnColor);
+            validCoordinates = true;
+        }
+        return validCoordinates;
+    }
+
+    private static boolean checkRowNumber(int rowsMove) {
+        if (!(0<= rowsMove && rowsMove <(Board.board.length))) {
+            System.out.println("Not a valid number!");
+            return true;
+        }
+        return false;
+    }
+
+    private static boolean checkLetter(int colsMove) {
+        if (!(0<= colsMove && colsMove <=(Board.board.length-1))) {
+            System.out.println("Not a valid letter!");
+            return true;
+        }
+        return false;
+    }
+
+    private static boolean checkMaxLength(String stringMove) {
+        if (stringMove.length()>3 || stringMove.length()<2) {
+            System.out.println("A letter between A and " + ((char) (Board.board.length+65-1)) +
+                    " and a number between 1 and "+ Board.board.length + " please!");
+            return true;
+        }
+        return false;
+    }
+
+    private static void checkForQuit(String stringMove) {
+        if (stringMove.equals("QUIT")) {
+            System.out.println("You quit the game!");
+            System.exit(0);
+        }
+    }
+
+
 }

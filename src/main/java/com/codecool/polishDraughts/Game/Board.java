@@ -8,24 +8,25 @@ import static java.awt.Color.*;
 public class Board {
     public static Pawn[][] board;
 
+    //generate board
     public static Pawn[][] board(int n) {
         board = new Pawn[n][n];
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                if (i == 0 && j % 2 != 0) {
-                    board[i][j] = new Pawn(BLACK);
-                } else if (i == 1 && j % 2 == 0) {
-                    board[i][j] = new Pawn(BLACK);
-                } else if (i == n - 2 && j % 2 != 0) {
-                    board[i][j] = new Pawn(WHITE);
-                } else if (i == n - 1 && j % 2 == 0) {
-                    board[i][j] = new Pawn(WHITE);
-                } else if (i % 2 == 0 && j % 2 == 0) {
-                    board[i][j] = new Pawn(BLUE);
-                } else if (i % 2 != 0 && j % 2 != 0) {
-                    board[i][j] = new Pawn(BLUE);
+        for (int row = 0; row < n; row++) {
+            for (int col = 0; col < n; col++) {
+                if ((row == 0 || row==2) && col % 2 != 0) {
+                    board[row][col] = new Pawn(BLACK);
+                } else if ((row == 1 || row==3) && col % 2 == 0) {
+                    board[row][col] = new Pawn(BLACK);
+                } else if ((row == n - 2 || row==n-4) && col % 2 != 0) {
+                    board[row][col] = new Pawn(WHITE);
+                } else if ((row == n - 1 || row==n-3) && col % 2 == 0) { //
+                    board[row][col] = new Pawn(WHITE);
+                } else if (col % 2 == 0 && row % 2 == 0) {//
+                    board[row][col] = new Pawn(BLUE);
+                } else if (col % 2 != 0 && row % 2 != 0) {//
+                    board[row][col] = new Pawn(BLUE);
                 } else {
-                    board[i][j] = new Pawn(GREEN);
+                    board[row][col] = new Pawn(GREEN);//
                 }
             }
         }
@@ -46,38 +47,39 @@ public class Board {
 
 
     public static void printBoard() {
-        String headBoard = " 1 2 3 4 5 6 7 8 9 1011121314151617181920";
-        //one  space for lettersSideBoard and 2x spaces for each column
-        String substr = headBoard.substring(0, board.length * 2 + 1);
         //initialize board2 used for display
         String[][] stringBoard = new String[board.length + 1][board.length + 1];
 
         for (int row = 0; row < stringBoard.length; row++) {
             for (int col = 0; col < stringBoard.length; col++) {
-                String firstLetter = (char) (col + 64) + "";
-                if (col == 0 && row > 0) {
-                    stringBoard[row][col] = Integer.toString(row);
+                String firstLetter = (char) (col + 64) + "";//
+                if (col == 0 && row > 0) {//
+                    stringBoard[row][col] = Integer.toString(row);//
                 } else if (col == 0) {
-                    stringBoard[row][col] = "";
+                    stringBoard[row][col] = "";//
                 } else if (row == 0) {
                     stringBoard[row][col] = firstLetter;
                 } else {
-                    if (board[col - 1][row - 1].pawnColor == BLUE) {
-                        stringBoard[col][row] = ".";
-                    } else if (board[col - 1][row - 1].pawnColor == GREEN) {
-                        stringBoard[col][row] = ".";
-                    } else if (board[col - 1][row - 1].pawnColor == WHITE) {
-                        stringBoard[col][row] = "O";
-                    } else if (board[col - 1][row - 1].pawnColor == BLACK) {
-                        stringBoard[col][row] = "X";
+                    if (board[row - 1][col - 1].pawnColor == BLUE) {
+                        stringBoard[row][col] = ".";
+                    } else if (board[row - 1][col - 1].pawnColor == GREEN) {
+                        stringBoard[row][col] = ".";
+                    } else if (board[row - 1][col - 1].pawnColor == WHITE) {
+                        stringBoard[row][col] = "O";
+                    } else if (board[row - 1][col - 1].pawnColor == GRAY) {
+                        stringBoard[row][col] = "M";
+                    } else {
+                        stringBoard[row][col] = "X";
                     }
 
                 }
             }
         }
 
-        System.out.println(Arrays.deepToString(stringBoard).replace("[[", " ").
-                replace("], ", "\n").
+        System.out.println(
+                Arrays.deepToString(stringBoard)
+                .replace("[[", " ")
+                .replace("], ", "\n").
                 replace(","," ").
                 replace("[","").
                 replace("]]","").
@@ -92,19 +94,34 @@ public class Board {
                 replace("18 ","18").
                 replace("19 ","19").
                 replace("20 ","20"));
+        System.out.println();
     }
 
 
-    public static void removePawn(int row, int col) {
-        if (board[row][col].pawnColor == WHITE || board[row][col].pawnColor == BLACK) {
+
+    public static void removePawn(int col, int row) {
+        if (board[row][col].pawnColor == GRAY) {
             board[row][col] = new Pawn(GREEN);
+        } else {
+            System.out.println("Try to select a M pawn");
+        }
+    }
+
+    public static void choosePawn(int col, int row) {
+        if (board[row][col].pawnColor == WHITE || board[col][row].pawnColor == BLACK) {
+            board[row][col] = new Pawn(GRAY);
         } else {
             System.out.println("Try to select a Pawn");
         }
     }
 
-    public void movePawn (int xi, int yi, int x, int y) {
+    public static void setPawn(int col, int row, Color player) {
+        board[row][col] = new Pawn(player);
+    }
 
+    public static void movePawn (int endCol, int endRow, Color player) {
+//        removePawn(iniRow, iniCol);
+        setPawn(endCol, endRow, player);
     }
 
 
