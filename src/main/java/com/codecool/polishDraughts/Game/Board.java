@@ -79,21 +79,21 @@ public class Board {
         System.out.println(
                 Arrays.deepToString(stringBoard)
                 .replace("[[", " ")
-                .replace("], ", "\n").
-                replace(","," ").
-                replace("[","").
-                replace("]]","").
-                replace("10 ","10").
-                replace("11 ","11").
-                replace("12 ","12").
-                replace("13 ","13").
-                replace("14 ","14").
-                replace("15 ","15").
-                replace("16 ","16").
-                replace("17 ","17").
-                replace("18 ","18").
-                replace("19 ","19").
-                replace("20 ","20"));
+                .replace("], ", "\n")
+                .replace(","," ")
+                .replace("[","")
+                .replace("]]","")
+                .replace("10 ","10")
+                .replace("11 ","11")
+                .replace("12 ","12")
+                .replace("13 ","13")
+                .replace("14 ","14")
+                .replace("15 ","15")
+                .replace("16 ","16")
+                .replace("17 ","17")
+                .replace("18 ","18")
+                .replace("19 ","19")
+                .replace("20 ","20"));
         System.out.println();
     }
 
@@ -107,6 +107,7 @@ public class Board {
         }
     }
 
+
     public static void choosePawn(int col, int row) {
         if (board[row][col].pawnColor == WHITE || board[row][col].pawnColor == BLACK) {
             board[row][col] = new Pawn(GRAY);
@@ -115,9 +116,11 @@ public class Board {
         }
     }
 
+
     public static void setPawn(int col, int row, Color player) {
         board[row][col] = new Pawn(player);
     }
+
 
     public static void movePawn (int endCol, int endRow, Color player) {
 //        removePawn(iniRow, iniCol);
