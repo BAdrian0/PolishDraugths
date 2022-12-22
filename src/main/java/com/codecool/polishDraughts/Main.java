@@ -38,17 +38,18 @@ public class Main {
             selection = Game.startEndMove(player, "start");
 //            System.out.println("Selection"+ selection);
             Board.choosePawn(selection[0], selection[1]);
-
             Board.printBoard();
-//            destination = Game.endMove(player);
-            destination = Game.startEndMove(player, "end");
-//            validMove = Game.checkDestination(selection[0], selection[1], destination[0], destination[1],player);
-//            if (!validMove) {
-//                continue;
-//            }
+
+            do {
+    //            destination = Game.endMove(player);
+                destination = Game.startEndMove(player, "end");
+                validMove = Game.checkDestination(selection[0], selection[1], destination[0], destination[1],player);
+            } while (!validMove);
+
             Board.removePawn(selection[0], selection[1]);
             Board.movePawn(destination[0], destination[1],player);
-            Board.printBoard();
+            Board.removeTakenPawn();
+//            Board.printBoard();
 //            Board.setPawn(selection[0], selection[1], player);
 //            Board.printBoard();
 

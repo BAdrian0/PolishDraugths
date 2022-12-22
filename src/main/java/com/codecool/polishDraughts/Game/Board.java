@@ -33,6 +33,17 @@ public class Board {
         return board;
     }
 
+    public static void removeTakenPawn() {
+        int n = board.length;
+        for (int row = 0; row < n; row++) {
+            for (int col = 0; col < n; col++) {
+                if (Board.board[row][col].pawnColor == MAGENTA) {
+                    board[row][col] = new Pawn(GREEN);
+                }
+            }
+        }
+    }
+
 
     public String toString() {
         return "String toString()";
@@ -68,6 +79,8 @@ public class Board {
                         stringBoard[row][col] = "O";
                     } else if (board[row - 1][col - 1].pawnColor == GRAY) {
                         stringBoard[row][col] = "M";
+                    } else if (board[row - 1][col - 1].pawnColor == MAGENTA) {
+                        stringBoard[row][col] = "T";
                     } else {
                         stringBoard[row][col] = "X";
                     }
