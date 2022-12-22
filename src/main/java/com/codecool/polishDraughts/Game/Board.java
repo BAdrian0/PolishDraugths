@@ -44,17 +44,37 @@ public class Board {
         }
     }
 
-
-    public String toString() {
-        return "String toString()";
+    public static String checkForWinner() {
+        int n = board.length;
+        int X = 0;
+        int O = 0;
+        int KX = 0;//king X
+        int KO = 0;//king O
+        String returnedValue = "";
+        for (int row = 0; row < n; row++) {
+            for (int col = 0; col < n; col++) {
+                if (Board.board[row][col].pawnColor == WHITE) {
+                    O += 1;
+                } else if (Board.board[row][col].pawnColor == BLACK) {
+                    X +=1;
+                } else if (Board.board[row][col].pawnColor == RED) {
+                    KX +=1;
+                } else if (Board.board[row][col].pawnColor == ORANGE) {
+                    KO +=1;
+                }
+            }
+        }
+        if (X==0) {
+            returnedValue = "O";
+        }
+        if (O==0) {
+            returnedValue = "X";
+        }
+        if (KX==1 && KO==1 && X==0 && O==0) {
+            returnedValue = "DRAW";
+        }
+        return returnedValue;
     }
-
-//
-//    public static void printBoard() {
-//        System.out.println(board.toString());
-//    }
-
-
 
 
     public static void printBoard() {
@@ -81,6 +101,10 @@ public class Board {
                         stringBoard[row][col] = "M";
                     } else if (board[row - 1][col - 1].pawnColor == MAGENTA) {
                         stringBoard[row][col] = "T";
+                    } else if (board[row - 1][col - 1].pawnColor == RED) {
+                        stringBoard[row][col] = "#";
+                    } else if (board[row - 1][col - 1].pawnColor == ORANGE) {
+                        stringBoard[row][col] = "@";
                     } else {
                         stringBoard[row][col] = "X";
                     }
@@ -122,16 +146,26 @@ public class Board {
 
 
     public static void choosePawn(int col, int row) {
-        if (board[row][col].pawnColor == WHITE || board[row][col].pawnColor == BLACK) {
+        if (board[row][col].pawnColor == WHITE || board[row][col].pawnColor == BLACK
+            || board[row][col].pawnColor == RED || board[row][col].pawnColor == ORANGE) {
             board[row][col] = new Pawn(GRAY);
         } else {
             System.out.println("Try to select a Pawn");
         }
     }
 
-
+//setting & crowning pawns
     public static void setPawn(int col, int row, Color player) {
-        board[row][col] = new Pawn(player);
+        if (player==BLACK && row==board.length-1) {
+            board[row][col] = new Pawn(RED);
+            board[row][col].isCrowned = true;
+        } else if (player==WHITE && row==0) {
+            board[row][col].isCrowned = true;
+            board[row][col] = new Pawn(ORANGE);
+        } else {
+            board[row][col] = new Pawn(player);
+        }
+
     }
 
 
@@ -140,28 +174,5 @@ public class Board {
         setPawn(endCol, endRow, player);
     }
 
-
-
-    //display board
-    public static void displayBoard() {
-        int count = 0;
-        int n = board.length;
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                count++;
-                System.out.println("count: " + count);
-//                System.out.println("Board: "+ (Board.board[i][j].pawnColor));
-                if (Board.board[i][j].pawnColor == Color.GREEN) {
-                    System.out.println("You have green at: i=" + i + "  j=" + j);
-                } else if (Board.board[i][j].pawnColor == Color.WHITE) {
-                    System.out.println("You have white at: i=" + i + "  j=" + j);
-                } else if (Board.board[i][j].pawnColor == Color.BLACK) {
-                    System.out.println("You have black at: i=" + i + "  j=" + j);
-                } else if (Board.board[i][j].pawnColor == Color.BLUE) {
-                    System.out.println("You have blue at: i=" + i + "  j=" + j);
-                }
-            }
-        }
-    }
 
 }

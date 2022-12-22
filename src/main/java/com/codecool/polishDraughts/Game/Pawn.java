@@ -6,26 +6,26 @@ public class Pawn {
 
     public Color pawnColor;
 
-    int[] coordinates = new int[2];
+//    int[] coordinates = new int[2];
 
     boolean isCrowned = false;
 
-    public void setCoordinates(int[] coordinates) {
-        this.coordinates = coordinates;
-    }
-
-    public int[] getCoordinates() {
-        return coordinates;
-    }
+//    public void setCoordinates(int[] coordinates) {
+//        this.coordinates = coordinates;
+//    }
+//
+//    public int[] getCoordinates() {
+//        return coordinates;
+//    }
 
     //pawn constructor
     public Pawn(Color color) {
         pawnColor = color;
     }
 
-    public Color getColor() {
-        return pawnColor;
-    }
+//    public Color getColor() {
+//        return pawnColor;
+//    }
 
 
 }
